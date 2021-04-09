@@ -23,7 +23,9 @@ kubectl edit cluster xxxxxxxxxx
 ### Pausing the StatefulSet
 
 To restore an etcd, the etcd must not be running.
-Therefore the etcd statefulset must be configured to just execute a `exec /bin/sleep 86400`.
+Therefore the `etcd` statefulset must be configured:
+ 1) to just execute as `command:` `exec /bin/sleep 86400` and remove all `args:`.
+ 2) remove the `readinessProbe:` and `livenessProbe:` specifications
 
 ```bash
 # change command to run 'exec /bin/sleep 86400'
@@ -53,11 +55,11 @@ The restore command is different for each member. Make sure to update it gets ex
 
 ```bash
 # Copy snapshot into pod
-kubectl cp snapshot.db cluster-xxxxxxxxxx/etcd-0:/var/run/etcd/
+kubectl cp local-snapshot.db cluster-xxxxxxxxxx/etcd-0:/snapshot.db
 # Exec into the pod
 kubectl -n cluster-xxxxxxxxxx exec -ti etcd-0 sh
 
-cd /var/run/etcd/
+cd /
 # Inside the pod, restore from the snapshot
 # This command is specific to each member.
 export MEMBER=etcd-0

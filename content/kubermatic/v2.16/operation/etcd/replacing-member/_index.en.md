@@ -22,7 +22,7 @@ As the StatefulSet needs to be modified, the affected cluster needs to be disabl
 kubectl edit cluster xxxxxxxxxx
 ```
 
-### Replacing the etcd Member
+### Replacing the etcd Member (without `etcdLauncher` feature)
 
 First, the member needs to removed from the etcd-internal member management. Otherwise we risk quorum loss during the restore procedure:
 
@@ -31,15 +31,13 @@ First, the member needs to removed from the etcd-internal member management. Oth
 kubectl -n cluster-xxxxxxxxxx exec -ti etcd-1 sh
 
 # Inside the pod
-export ETCDCTL_API=3
-export ETCD_ARGS='--cacert /etc/etcd/pki/ca/ca.crt --cert /etc/etcd/pki/client/apiserver-etcd-client.crt --key /etc/etcd/pki/client/apiserver-etcd-client.key --endpoints https://localhost:2379'
-etcdctl ${ETCD_ARGS} member list
+etcdctl member list
 #  1edc8e27256b30a9, started, etcd-2, http://etcd-2.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380, https://10.44.36.62:2379,https://etcd-2.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2379
 #  253869731a787437, started, etcd-0, http://etcd-0.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380, https://10.44.36.61:2379,https://etcd-0.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2379
 #  e2ee7cf8c0f39103, started, etcd-1, http://etcd-1.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380, https://10.44.37.62:2379,https://etcd-1.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2379
 
 # Remove etcd-0 by its ID
-etcdctl ${ETCD_ARGS} member remove 253869731a787437
+etcdctl member remove 253869731a787437
 ```
 
 Afterwards we need to change the initial-state of the etcd cluster.
@@ -60,14 +58,12 @@ Now add the member manually to the etcd-internal member management:
 # Exec into the pod
 kubectl -n cluster-xxxxxxxxxx exec -ti etcd-1 sh
 
-export ETCDCTL_API=3
-export ETCD_ARGS='--cacert /etc/etcd/pki/ca/ca.crt --cert /etc/etcd/pki/client/apiserver-etcd-client.crt --key /etc/etcd/pki/client/apiserver-etcd-client.key --endpoints https://localhost:2379'
-etcdctl ${ETCD_ARGS} member list
+etcdctl member list
 # 1edc8e27256b30a9, started, etcd-2, http://etcd-2.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380, https://10.44.36.93:2379,https://etcd-2.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2379
 # e2ee7cf8c0f39103, started, etcd-1, http://etcd-1.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380, https://10.44.37.101:2379,https://etcd-1.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2379
 
 # Add the member back
-etcdctl ${ETCD_ARGS} member add etcd-0 --peer-urls=http://etcd-0.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380
+etcdctl member add etcd-0 --peer-urls=http://etcd-0.etcd.cluster-xxxxxxxxxx.svc.cluster.local:2380
 ```
 
 Now we can remove the failed Pod and delete its PVC. Both will be recreated:

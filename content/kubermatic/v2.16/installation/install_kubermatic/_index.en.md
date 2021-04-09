@@ -72,7 +72,7 @@ The key items to configure are:
 * For proper authentication, shared secrets must be configured between Dex and KKP. Likewise, Dex uses
   yet another random secret to encrypt cookiesstored in the users' browsers.
 * The expose strategy, that is the strategy used to expose the control plane
-  components to the worker nodes (see the [expose strategy]({{< ref "../expose_strategy">}}))
+  components to the worker nodes (see the [expose strategy]({{< ref "../../concepts/expose-strategy">}}))
 
 There are many more options, but these are essential to get a minimal system up and running. The secret keys
 mentioned above can be generated using any password generator or on the shell using

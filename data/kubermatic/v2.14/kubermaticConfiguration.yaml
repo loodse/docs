@@ -8,8 +8,7 @@ spec:
   api:
     # AccessibleAddons is a list of addons that should be enabled in the API.
     accessibleAddons:
-    - node-exporter
-    - gatekeeper
+      - node-exporter
     # DebugLog enables more verbose logging.
     debugLog: false
     # DockerRepository is the repository containing the Kubermatic REST API image.
@@ -91,7 +90,7 @@ spec:
       # DryRun makes the migrator only log the actions it would take.
       dryRun: false
     # Replicas sets the number of pod replicas for the master-controller-manager.
-    replicas: 2
+    replicas: 1
     # Resources describes the requested and maximum allowed CPU/memory usage.
     resources:
       # Limits describes the maximum amount of compute resources allowed.
@@ -191,7 +190,7 @@ spec:
     # data. This port is never exposed from the container and only available via port-forwardings.
     pprofEndpoint: :6600
     # Replicas sets the number of pod replicas for the seed-controller-manager.
-    replicas: 2
+    replicas: 1
     # Resources describes the requested and maximum allowed CPU/memory usage.
     resources:
       # Limits describes the maximum amount of compute resources allowed.
@@ -256,6 +255,12 @@ spec:
             kind: Addon
             metadata:
               name: csi
+              labels:
+                addons.kubermatic.io/ensure: true
+          - apiVersion: kubermatic.k8s.io/v1
+            kind: Addon
+            metadata:
+              name: dns
               labels:
                 addons.kubermatic.io/ensure: true
           - apiVersion: kubermatic.k8s.io/v1
@@ -397,7 +402,7 @@ spec:
     # Kubernetes configures the Kubernetes versions and updates.
     kubernetes:
       # Default is the default version to offer users.
-      default: 1.17.5
+      default: 1.17.9
       # Updates is a list of available and automatic upgrades.
       # All 'to' versions must be configured in the version list for this orchestrator.
       # Each update may optionally be configured to be 'automatic: true', in which case the
@@ -408,69 +413,61 @@ spec:
       # updates as well. 'automaticNodeUpdate: true' implies 'automatic: true' as well,
       # because Nodes may not have a newer version than the controlplane.
       updates:
-      - # Automatic controls whether this update is executed automatically
-        # for the control plane of all matching user clusters.
-        automatic: false
-        # Automatic controls whether this update is executed automatically
-        # for the worker nodes of all matching user clusters.
-        automaticNodeUpdate: false
-        # From is the version from which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
-        from: 1.14.*
-        # From is the version to which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
-        to: 1.14.*
-      - automatic: true
-        from: <= 1.14.7, >= 1.14.0
-        to: 1.14.8
-      - from: 1.14.*
-        to: 1.15.*
-      - from: 1.15.*
-        to: 1.15.*
-      - automatic: true
-        from: <= 1.15.4, >= 1.15.0
-        to: 1.15.5
-      - automatic: true
-        from: 1.15.8
-        to: 1.15.9
-      - from: 1.15.*
-        to: 1.16.*
-      - from: 1.16.*
-        to: 1.16.*
-      - automatic: true
-        from: <= 1.16.1, >= 1.16.0
-        to: 1.16.2
-      - automatic: true
-        from: 1.16.5
-        to: 1.16.6
-      - from: 1.16.*
-        to: 1.17.*
-      - from: 1.17.*
-        to: 1.17.*
-      - automatic: true
-        from: 1.17.1
-        to: 1.17.2
-      - from: 1.17.*
-        to: 1.18.*
-      - from: 1.18.*
-        to: 1.18.*
+        - # Automatic controls whether this update is executed automatically
+          # for the control plane of all matching user clusters.
+          automatic: false
+          # Automatic controls whether this update is executed automatically
+          # for the worker nodes of all matching user clusters.
+          automaticNodeUpdate: false
+          # From is the version from which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
+          from: 1.14.*
+          # From is the version to which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
+          to: 1.14.*
+        - automatic: true
+          from: <= 1.14.7, >= 1.14.0
+          to: 1.14.8
+        - from: 1.14.*
+          to: 1.15.*
+        - from: 1.15.*
+          to: 1.15.*
+        - automatic: true
+          from: <= 1.15.4, >= 1.15.0
+          to: 1.15.5
+        - automatic: true
+          from: 1.15.8
+          to: 1.15.9
+        - from: 1.15.*
+          to: 1.16.*
+        - from: 1.16.*
+          to: 1.16.*
+        - automatic: true
+          from: <= 1.16.12, >= 1.16.0
+          to: 1.16.13
+        - from: 1.16.*
+          to: 1.17.*
+        - from: 1.17.*
+          to: 1.17.*
+        - automatic: true
+          from: <= 1.17.8, >= 1.17.0
+          to: 1.17.9
+        - from: 1.17.*
+          to: 1.18.*
+        - from: 1.18.*
+          to: 1.18.*
+        - automatic: true
+          from: <= 1.18.5, >= 1.18.0
+          to: 1.18.6
       # Versions lists the available versions.
       versions:
-      - 1.15.5
-      - 1.15.6
-      - 1.15.7
-      - 1.15.9
-      - 1.15.10
-      - 1.15.11
-      - 1.16.2
-      - 1.16.3
-      - 1.16.4
-      - 1.16.6
-      - 1.16.7
-      - 1.16.9
-      - 1.17.0
-      - 1.17.2
-      - 1.17.3
-      - 1.17.5
-      - 1.18.2
+        - 1.15.5
+        - 1.15.6
+        - 1.15.7
+        - 1.15.9
+        - 1.15.10
+        - 1.15.11
+        - 1.16.13
+        - 1.17.9
+        - 1.18.6
     # Openshift configures the Openshift versions and updates.
     openshift:
       # Default is the default version to offer users.
@@ -485,22 +482,22 @@ spec:
       # updates as well. 'automaticNodeUpdate: true' implies 'automatic: true' as well,
       # because Nodes may not have a newer version than the controlplane.
       updates:
-      - # Automatic controls whether this update is executed automatically
-        # for the control plane of all matching user clusters.
-        automatic: false
-        # Automatic controls whether this update is executed automatically
-        # for the worker nodes of all matching user clusters.
-        automaticNodeUpdate: false
-        # From is the version from which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
-        from: 4.1.*
-        # From is the version to which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
-        to: 4.1.*
-      - from: 4.1.*
-        to: 2.2.*
+        - # Automatic controls whether this update is executed automatically
+          # for the control plane of all matching user clusters.
+          automatic: false
+          # Automatic controls whether this update is executed automatically
+          # for the worker nodes of all matching user clusters.
+          automaticNodeUpdate: false
+          # From is the version from which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
+          from: 4.1.*
+          # From is the version to which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
+          to: 4.1.*
+        - from: 4.1.*
+          to: 2.2.*
       # Versions lists the available versions.
       versions:
-      - 4.1.9
-      - 4.1.18
+        - 4.1.9
+        - 4.1.18
   # VerticalPodAutoscaler configures the Kubernetes VPA integration.
   verticalPodAutoscaler:
     admissionController:

@@ -95,6 +95,10 @@ helm --tiller-namespace kubermatic upgrade --install --values /path/to/your/helm
 
 ## Add the Seed Resource
 
+{{% notice warning %}}
+For not combined master/seed cluster setup, please use the [Add Seed Cluster for EE]({{< ref "../add_seed_cluster_ee" >}}) docs!
+{{% /notice %}}
+
 To connect the new seed cluster with the master, you need to create a kubeconfig Secret and a Seed resource. This allows
 the KKP components in the master cluster to communicate with the seed cluster and reconcile user-cluster control planes.
 
@@ -105,7 +109,7 @@ try to talk to local token helper programs like `aws-iam-authenticator` for AWS 
 These kubeconfig files **will not work** for setting up Seeds.
 {{% /notice %}}
 
-The Kubermatic repository provides a [script](https://github.com/kubermatic/kubermatic-installer/blob/master/kubeconfig-serviceaccounts.sh) that can be used to prepare a kubeconfig for usage in Kubermatic. The script will create
+The Kubermatic repository provides a [script](https://github.com/kubermatic-labs/community-components/blob/master/helper/kubeconfig-kubermatic-serviceaccount.sh) that can be used to prepare a kubeconfig for usage in Kubermatic. The script will create
 a ServiceAccount in the seed cluster, bind it to the `cluster-admin` role and then put the ServiceAccount's token into
 the kubeconfig file. Afterwards the file can be used in KKP.
 
@@ -148,7 +152,7 @@ spec:
 Refer to the [Seed CRD documentation]({{< ref "../../concepts/seeds" >}}) for a complete example of the
 Seed CustomResource and all possible datacenters.
 
-You can override the global [Expose Strategy]({{< ref "../expose_strategy">}}) at
+You can override the global [Expose Strategy]({{< ref "../../concepts/expose-strategy">}}) at
 Seed level if you wish to.
 
 Apply the manifest above in the master cluster and KKP will pick up the new Seed and begin to
@@ -177,7 +181,7 @@ watch kubectl -n kubermatic get pods
 
 ## Update DNS
 
-Depending on the chosen [Expose Strategy]({{< ref "../expose_strategy">}}), the control planes of all user clusters
+Depending on the chosen [Expose Strategy]({{< ref "../../concepts/expose-strategy">}}), the control planes of all user clusters
 running in the Seed cluster will be exposed by the `nodeport-proxy` or using
 services of type `NodePort` directly.
 

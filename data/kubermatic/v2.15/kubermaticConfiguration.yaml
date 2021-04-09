@@ -58,6 +58,8 @@ spec:
     # that will be used to acquire the certificate for the configured domain.
     # To use a namespaced Issuer, set the Kind to "Issuer" and manually create the
     # matching Issuer in Kubermatic's namespace.
+    # Setting an empty name disables the automatic creation of certificates and disables
+    # the TLS settings on the Kubermatic Ingress.
     certificateIssuer:
       # APIGroup is the group for the resource being referenced.
       # If APIGroup is not specified, the specified Kind must be in the core API group.
@@ -187,6 +189,9 @@ spec:
     debugLog: false
     # DockerRepository is the repository containing the Kubermatic seed-controller-manager image.
     dockerRepository: quay.io/kubermatic/kubermatic
+    # MaximumParallelReconciles limits the number of cluster reconciliations
+    # that are active at any given time.
+    maximumParallelReconciles: 10
     # PProfEndpoint controls the port the seed-controller-manager should listen on to provide pprof
     # data. This port is never exposed from the container and only available via port-forwardings.
     pprofEndpoint: :6600
@@ -299,6 +304,10 @@ spec:
         # DockerRepository is the repository containing the Docker image containing
         # the possible addon manifests.
         dockerRepository: quay.io/kubermatic/addons
+        # DockerTagSuffix is appended to the tag used for referring to the addons image.
+        # If left empty, the tag will be the KKP version (e.g. "v2.15.0"), with a
+        # suffix it becomes "v2.15.0-SUFFIX".
+        dockerTagSuffix: ""
       # Openshift controls the addons for Openshift-based clusters.
       openshift:
         # Default is the list of addons to be installed by default into each cluster.
@@ -351,6 +360,10 @@ spec:
         # DockerRepository is the repository containing the Docker image containing
         # the possible addon manifests.
         dockerRepository: quay.io/kubermatic/openshift-addons
+        # DockerTagSuffix is appended to the tag used for referring to the addons image.
+        # If left empty, the tag will be the KKP version (e.g. "v2.15.0"), with a
+        # suffix it becomes "v2.15.0-SUFFIX".
+        dockerTagSuffix: ""
     # APIServerReplicas configures the replica count for the API-Server deployment inside user clusters.
     apiserverReplicas: 2
     # DisableAPIServerEndpointReconciling can be used to toggle the `--endpoint-reconciler-type` flag for
@@ -391,7 +404,7 @@ spec:
     # Kubernetes configures the Kubernetes versions and updates.
     kubernetes:
       # Default is the default version to offer users.
-      default: 1.18.8
+      default: 1.18.10
       # Updates is a list of available and automatic upgrades.
       # All 'to' versions must be configured in the version list for this orchestrator.
       # Each update may optionally be configured to be 'automatic: true', in which case the
@@ -404,21 +417,13 @@ spec:
       updates:
         - # Automatic controls whether this update is executed automatically
           # for the control plane of all matching user clusters.
-          automatic: false
+          automatic: true
           # Automatic controls whether this update is executed automatically
           # for the worker nodes of all matching user clusters.
           automaticNodeUpdate: false
           # From is the version from which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
           from: 1.15.*
           # From is the version to which an update is allowed. Wildcards are allowed, e.g. "1.18.*".
-          to: 1.15.*
-        - automatic: true
-          from: <= 1.15.4, >= 1.15.0
-          to: 1.15.5
-        - automatic: true
-          from: 1.15.8
-          to: 1.15.9
-        - from: 1.15.*
           to: 1.16.*
         - from: 1.16.*
           to: 1.16.*
@@ -445,13 +450,16 @@ spec:
           to: 1.19.*
       # Versions lists the available versions.
       versions:
-        - 1.16.13
-        - 1.16.14
         - 1.17.9
         - 1.17.11
+        - 1.17.12
+        - 1.17.13
         - 1.18.6
         - 1.18.8
+        - 1.18.10
         - 1.19.0
+        - 1.19.2
+        - 1.19.3
     # Openshift configures the Openshift versions and updates.
     openshift:
       # Default is the default version to offer users.

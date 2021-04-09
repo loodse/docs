@@ -17,9 +17,10 @@ When creating worker nodes for a user cluster, the user can specify an existing 
 
 Supported operating systems
 
-* Ubuntu 18.04 [ova](https://cloud-images.ubuntu.com/releases/18.04/release/ubuntu-18.04-server-cloudimg-amd64.ova)
-* CoreOS [ova](https://stable.release.core-os.net/amd64-usr/current/coreos_production_vmware_ova.ova)
 * CentOS 7 [qcow2](https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2)
+* CoreOS  [ova](https://stable.release.core-os.net/amd64-usr/current/coreos_production_vmware_ova.ova) (End of Life, [2020-05-26](https://coreos.com/os/eol/))
+* Flatcar Container Linux [ova](https://stable.release.flatcar-linux.net/amd64-usr/current/flatcar_production_vmware_ova.ova)
+* Ubuntu 18.04 [ova](https://cloud-images.ubuntu.com/releases/18.04/release/ubuntu-18.04-server-cloudimg-amd64.ova)
 
 #### Importing the OVA
 
@@ -66,6 +67,8 @@ The vsphere user has to have to following permissions on the correct resources:
 
 #### Seed Cluster
 
+For provisioning actions of the KKP seed cluster, a technical user (e.g. `cust-seed-ccm`) is needed:
+
 * Role `k8c-storage-vmfolder-propagate`
   * Granted at **VM Folder** and **Template Folder**, propagated
   * Permissions
@@ -92,10 +95,14 @@ The vsphere user has to have to following permissions on the correct resources:
 
 #### User Cluster
 
+For provisioning actions of the KKP in scope of an user cluster, a technical user (e.g. `cust-user-cluster`) is needed:
+
 * Role `k8c-user-vcenter`
   * Granted at **vcenter** level, **not** propagated
   * Needed to customize VM during provisioning
   * Permissions
+    * Profile-driven storage
+      * Profile-driven storage view
     * VirtualMachine
       * Provisioning
         * Modify customization specification
@@ -138,7 +145,7 @@ The vsphere user has to have to following permissions on the correct resources:
       * vApp instance configuration
 
 * Role k8s-network-attach
-  * Granted for each network that should be used
+  * Granted for each network that should be used (distributed switch + network)
   * Permissions
     * Network
       * Assign network

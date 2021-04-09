@@ -9,7 +9,7 @@ weight = 50
 ## Expose Strategy
 
 Kubermatic Kubernetes Platform (KKP) 2.11 adds support to expose user clusters by creating one service of type `LoadBalancer` per user
-cluster. Check out the [Expose Strategy documentation]({{< ref "../../concepts/expose-strategy/expose_strategy.en.md" >}}) for more details.
+cluster. Check out the [Expose Strategy documentation]({{< ref "../../concepts/expose-strategy" >}}) for more details.
 
 ## Helm Charts
 
