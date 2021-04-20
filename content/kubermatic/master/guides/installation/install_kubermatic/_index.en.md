@@ -23,7 +23,7 @@ and make yourself familiar with the requirements for your chosen cloud provider.
 For this guide you will have to have `kubectl` and [Helm](https://www.helm.sh/) (version 3) installed locally.
 
 {{% notice warning %}}
-This guide assumes a clean installation into an empty cluster. Please refer to the [upgrade notes]({{< ref "." >}}) for more information on
+This guide assumes a clean installation into an empty cluster. Please refer to the [upgrade notes]({{< ref "../../upgrading" >}}) for more information on
 migrating existing installations to the Kubermatic Installer.
 {{% /notice %}}
 
