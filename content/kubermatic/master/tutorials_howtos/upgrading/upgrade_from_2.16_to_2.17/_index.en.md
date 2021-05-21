@@ -40,3 +40,4 @@ upgrade paths:
 
 * [Upgrade from Chart-based installations]({{< ref "./chart_migration" >}})
 * [Upgrade from Operator-based installations]({{< ref "./kubermatic_operator" >}})
+
