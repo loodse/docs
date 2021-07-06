@@ -127,6 +127,8 @@ API endpoint documentation: [Azure API Docs - Request URI](https://docs.microsof
 management.azure.com
 # Azure classic deployment API
 management.core.windows.net
+# Azure Authentication API
+login.microsoftonline.com
 ```
 
 ### vSphere
@@ -142,6 +144,10 @@ If [KubeOne](https://github.com/kubermatic/kubeone) is used to setup the seed cl
 packages.cloud.google.com/apt
 download.docker.com/linux/ubuntu
 apt.kubernetes.io
+## on azure VM's
+azure.archive.ubuntu.com
+# security packages ubuntu
+security.ubuntu.com
 
 # centos
 packages.cloud.google.com/yum

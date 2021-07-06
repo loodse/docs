@@ -1,7 +1,7 @@
 +++
 title = "Kubermatic Kubernetes Platform (KKP) Proxy Whitelisting"
 date = 2019-09-13T12:07:15+02:00
-weight = 110
+weight = 90
 
 +++
 
@@ -133,7 +133,7 @@ login.microsoftonline.com
 ```
 
 ### vSphere
-API Endpoint URL of all targeted vCenters specified in [seed cluster `spec.datacenters.EXAMPLEDC.vsphere.endpoint`]({{< ref "../../concepts/seeds" >}}), e.g. `vcenter.example.com`.
+API Endpoint URL of all targeted vCenters specified in [seed cluster `spec.datacenters.EXAMPLEDC.vsphere.endpoint`]({{< ref "../../architecture/concepts/seeds" >}}), e.g. `vcenter.example.com`.
 
 
 ## KubeOne Seed Cluster Setup
