@@ -103,7 +103,7 @@ The installer can automatically create an SSD-based StorageClass for a subset of
 simply copy the default StorageClass, but this is not recommended for production setups unless the default class
 is using SSDs.
 
-Use the `--storageclass` parameter for automatically creating the class during installation. Currently th efollowing
+Use the `--storageclass` parameter for automatically creating the class during installation. Currently the following
 providers are supported:
 
 - AWS
