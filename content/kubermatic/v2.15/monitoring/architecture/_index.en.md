@@ -16,7 +16,7 @@ Along the seed-level Prometheus, there is a single alertmanager running in the s
 
 ## Federation
 
-The seed-level Prometheus uses Prometheus' native federation mechanism to scrape the customer Prometheus instances. To prevent excessive amountf of data in the seed, it will however only scrape a few selected metrics, namely those labelled with `kubermatic=federate`.
+The seed-level Prometheus uses Prometheus' native federation mechanism to scrape the customer Prometheus instances. To prevent excessive amounts of data in the seed, it will however only scrape a few selected metrics, namely those labelled with `kubermatic=federate`.
 
 The last of these options is used for pre-aggregated metrics, which combine highly detailed time series (like from etcd) into smaller, easier to handle metrics that can be readily used inside Grafana.
 
