@@ -16,5 +16,5 @@ managing Seed resources inside the master cluster.
 The following is an example Seed, showing all possible options.
 
 ```yaml
-{{< readfile "kubermatic/master/data/seed.yaml" >}}
+{{< readfile "kubermatic/v2.17/data/seed.yaml" >}}
 ```

@@ -302,7 +302,7 @@ KKP injects an instance of the `TemplateData` struct into each template. The fol
 Go snippet shows the available information:
 
 ```
-{{< readfile "kubermatic/v2.16/data/addondata.go" >}}
+{{< readfile "kubermatic/master/data/addondata.go" >}}
 ```
 
 KKP also injects [Sprig](http://masterminds.github.io/sprig/) functions and the following

@@ -8,60 +8,15 @@ weight = 100
 This chapter describes how to configure the available Kubernetes/OpenShift versions and how to
 provide update paths for user clusters.
 
-The list of selectable versions when [specifying cluster name and Kubernetes version]({{< ref "../../project_and_cluster_management#step-2-specify-the-cluster-name-and-kubernetes-version" >}}) is defined in the `spec.versions`
+The list of selectable versions when [specifying cluster name and Kubernetes version]({{< ref "../../project_and_cluster_management" >}}) is defined in the `spec.versions`
 section in the [KubermaticConfiguration]({{< ref "../../../tutorials_howtos/kkp_configuration" >}}) CRD.
 This is also where updates are configured.
 
 ### Default Versions
 
-The list of default versions is shown in the CRD example linked to above, but it's recommended
-to retrieve the actual list from the Kubermatic Kubernetes Platform (KKP) Operator itself.
-
-The operator comes with a `kubermatic-operator-util` tool, which can output a full default
-KubermaticConfiguration:
-
-```bash
-docker run --rm quay.io/kubermatic/api:KUBERMATIC_VERSION kubermatic-operator-util defaults
-#apiVersion: operator.kubermatic.io/v1alpha1
-#kind: KubermaticConfiguration
-#metadata:
-#  name: kubermatic
-#  namespace: kubermatic
-#spec:
-#  ...
-#  versions:
-#    kubernetes: ...
-#      versions: ...
-#      default: ...
-#      updates: ...
-#    openshift: ...
-#      versions: ...
-#      default: ...
-#      updates: ...
-```
-
-A simplified configuration for Kubernetes might look like this:
-
-```yaml
-spec:
-  versions:
-    kubernetes:
-      versions:
-        - '1.15.99'
-        - '1.16.0'
-        - '1.16.1'
-        - '1.16.2'
-      default: '1.16.2'
-      updates:
-        # allow version updates to any minor version
-        - from: '1.16.*'
-          to: '1.16.*'
-        # assuming 1.15.99 has security issues, this would force an
-        # update for clusters using it
-        - from: '1.15.99'
-          to: '1.16.2'
-          automatic: true
-```
+The list of default versions, is shown by the CRD example linked above, but it's recommended to retrieve the actual list from our github repo itself. 
+  
+They can be found in the [docs](https://github.com/kubermatic/kubermatic/tree/release/v2.17/docs) directory.
 
 ### Configuring Versions
 

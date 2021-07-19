@@ -23,7 +23,7 @@ Kubernetes Audit Logging is optional and is not enabled by default, since it req
 Once enabled, KKP will use a [Log Backend](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#log-backend) and a minimal [Policy](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#audit-policy) by default:
 
 ```yaml
-{{< readfile "kubermatic/master/data/policy.yaml">}}
+{{< readfile "kubermatic/v2.16/data/policy.yaml">}}
 ```
 
 This file is stored in a ConfigMap named `audit-config` on the [Seed Cluster]({{< ref "../../concepts/architecture/#seed-cluster" >}}) in your cluster namespace. To modify the default policy, you can edit this ConfigMap using `kubectl`:
